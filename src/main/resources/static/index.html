@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Demo Spring Boot</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="shell">
+    <section class="hero">
+        <div>
+            <p class="eyebrow">Spring Boot REST API</p>
+            <h1>Quan ly sinh vien</h1>
+            <p class="lead">Demo CRUD voi Controller, Service, Repository, Spring Data JPA va H2 Database.</p>
+        </div>
+        <div class="status" id="healthStatus">Dang kiem tra API...</div>
+    </section>
+
+    <section class="workspace">
+        <form class="panel" id="studentForm">
+            <input type="hidden" id="studentId">
+            <h2 id="formTitle">Them sinh vien</h2>
+
+            <label>
+                Ho ten
+                <input id="fullName" name="fullName" required placeholder="Nguyen Van An">
+            </label>
+
+            <label>
+                Email
+                <input id="email" name="email" type="email" required placeholder="an@example.com">
+            </label>
+
+            <label>
+                Nganh hoc
+                <input id="major" name="major" required placeholder="Cong nghe thong tin">
+            </label>
+
+            <label>
+                GPA
+                <input id="gpa" name="gpa" type="number" min="0" max="4" step="0.1" required placeholder="3.5">
+            </label>
+
+            <div class="actions">
+                <button type="submit" class="primary" id="saveButton">Luu</button>
+                <button type="button" id="resetButton">Nhap moi</button>
+            </div>
+
+            <p class="message" id="formMessage"></p>
+        </form>
+
+        <section class="panel list-panel">
+            <div class="list-heading">
+                <div>
+                    <h2>Danh sach sinh vien</h2>
+                    <p id="studentCount">0 sinh vien</p>
+                </div>
+                <label class="search">
+                    Loc nganh
+                    <input id="majorSearch" placeholder="VD: du lieu">
+                </label>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ho ten</th>
+                        <th>Email</th>
+                        <th>Nganh</th>
+                        <th>GPA</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody id="studentTable"></tbody>
+                </table>
+            </div>
+        </section>
+    </section>
+</main>
+
+<script src="/app.js"></script>
+</body>
+</html>
