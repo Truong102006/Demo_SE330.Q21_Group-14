@@ -4,27 +4,27 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Demo Spring Boot</title>
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/styles.css?v=20260506-1">
 </head>
 <body>
 <main class="shell">
     <section class="hero">
         <div>
             <p class="eyebrow">Spring Boot REST API</p>
-            <h1>Quan ly sinh vien</h1>
-            <p class="lead">Demo CRUD voi Controller, Service, Repository, Spring Data JPA va H2 Database.</p>
+            <h1>Quản lý sinh viên</h1>
+            <p class="lead">Demo CRUD với Controller, Service, Repository, Spring Data JPA và H2 Database.</p>
         </div>
-        <div class="status" id="healthStatus">Dang kiem tra API...</div>
+        <div class="status" id="healthStatus">Đang kiểm tra API...</div>
     </section>
 
     <section class="workspace">
         <form class="panel" id="studentForm">
             <input type="hidden" id="studentId">
-            <h2 id="formTitle">Them sinh vien</h2>
+            <h2 id="formTitle">Thêm sinh viên</h2>
 
             <label>
-                Ho ten
-                <input id="fullName" name="fullName" required placeholder="Nguyen Van An">
+                Họ tên
+                <input id="fullName" name="fullName" required placeholder="Nguyễn Văn An">
             </label>
 
             <label>
@@ -33,8 +33,8 @@
             </label>
 
             <label>
-                Nganh hoc
-                <input id="major" name="major" required placeholder="Cong nghe thong tin">
+                Ngành học
+                <input id="major" name="major" required placeholder="Công nghệ thông tin">
             </label>
 
             <label>
@@ -43,8 +43,8 @@
             </label>
 
             <div class="actions">
-                <button type="submit" class="primary" id="saveButton">Luu</button>
-                <button type="button" id="resetButton">Nhap moi</button>
+                <button type="submit" class="primary" id="saveButton">Lưu</button>
+                <button type="button" id="resetButton">Nhập mới</button>
             </div>
 
             <p class="message" id="formMessage"></p>
@@ -53,12 +53,12 @@
         <section class="panel list-panel">
             <div class="list-heading">
                 <div>
-                    <h2>Danh sach sinh vien</h2>
-                    <p id="studentCount">0 sinh vien</p>
+                    <h2>Danh sách sinh viên</h2>
+                    <p id="studentCount">0 sinh viên</p>
                 </div>
                 <label class="search">
-                    Loc nganh
-                    <input id="majorSearch" placeholder="VD: du lieu">
+                    Lọc ngành
+                    <input id="majorSearch" placeholder="VD: dữ liệu">
                 </label>
             </div>
 
@@ -67,9 +67,9 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Ho ten</th>
+                        <th>Họ tên</th>
                         <th>Email</th>
-                        <th>Nganh</th>
+                        <th>Ngành</th>
                         <th>GPA</th>
                         <th></th>
                     </tr>
@@ -81,6 +81,17 @@
     </section>
 </main>
 
-<script src="/app.js"></script>
+<div class="modal-overlay hidden" id="confirmDeleteModal" role="dialog" aria-modal="true" aria-labelledby="confirmDeleteTitle" hidden>
+    <div class="modal-card">
+        <h3 id="confirmDeleteTitle">Xác nhận xóa</h3>
+        <p>Bạn có chắc chắn muốn xóa không?</p>
+        <div class="actions">
+            <button type="button" class="danger" id="confirmDeleteButton">Xác nhận</button>
+            <button type="button" id="cancelDeleteButton">Hủy</button>
+        </div>
+    </div>
+</div>
+
+<script src="/app.js?v=20260506-1"></script>
 </body>
 </html>

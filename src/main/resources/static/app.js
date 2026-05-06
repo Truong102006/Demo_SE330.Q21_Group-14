@@ -7,6 +7,9 @@ const resetButton = document.querySelector("#resetButton");
 const majorSearch = document.querySelector("#majorSearch");
 const studentCount = document.querySelector("#studentCount");
 const healthStatus = document.querySelector("#healthStatus");
+const confirmDeleteModal = document.querySelector("#confirmDeleteModal");
+const confirmDeleteButton = document.querySelector("#confirmDeleteButton");
+const cancelDeleteButton = document.querySelector("#cancelDeleteButton");
 
 const fields = {
     id: document.querySelector("#studentId"),
@@ -15,6 +18,8 @@ const fields = {
     major: document.querySelector("#major"),
     gpa: document.querySelector("#gpa")
 };
+
+let deletingStudentId = null;
 
 async function request(url, options = {}) {
     const response = await fetch(url, {
@@ -52,24 +57,24 @@ function fillForm(student) {
     fields.email.value = student.email;
     fields.major.value = student.major;
     fields.gpa.value = student.gpa;
-    formTitle.textContent = `Sua sinh vien #${student.id}`;
-    saveButton.textContent = "Cap nhat";
+    formTitle.textContent = `Sửa sinh viên #${student.id}`;
+    saveButton.textContent = "Cập nhật";
     formMessage.textContent = "";
 }
 
 function resetForm() {
     form.reset();
     fields.id.value = "";
-    formTitle.textContent = "Them sinh vien";
-    saveButton.textContent = "Luu";
+    formTitle.textContent = "Thêm sinh viên";
+    saveButton.textContent = "Lưu";
     formMessage.textContent = "";
 }
 
 function renderStudents(students) {
-    studentCount.textContent = `${students.length} sinh vien`;
+    studentCount.textContent = `${students.length} sinh viên`;
 
     if (students.length === 0) {
-        table.innerHTML = `<tr><td class="empty" colspan="6">Chua co sinh vien nao</td></tr>`;
+        table.innerHTML = `<tr><td class="empty" colspan="6">Chưa có sinh viên nào</td></tr>`;
         return;
     }
 
@@ -82,8 +87,8 @@ function renderStudents(students) {
             <td>${student.gpa.toFixed(1)}</td>
             <td>
                 <span class="row-actions">
-                    <button type="button" data-edit="${student.id}">Sua</button>
-                    <button type="button" class="danger" data-delete="${student.id}">Xoa</button>
+                    <button type="button" data-edit="${student.id}">Sửa</button>
+                    <button type="button" class="danger" data-delete="${student.id}">Xóa</button>
                 </span>
             </td>
         </tr>
@@ -103,7 +108,7 @@ async function checkHealth() {
         healthStatus.textContent = `API ${health.status}`;
         healthStatus.classList.remove("error");
     } catch {
-        healthStatus.textContent = "API loi";
+        healthStatus.textContent = "API lỗi";
         healthStatus.classList.add("error");
     }
 }
@@ -113,7 +118,19 @@ function formatError(error) {
         return Object.values(error.fields).join(". ");
     }
 
-    return error.error || "Co loi xay ra";
+    return error.error || "Có lỗi xảy ra";
+}
+
+function openDeleteModal(studentId) {
+    deletingStudentId = studentId;
+    confirmDeleteModal.removeAttribute("hidden");
+    confirmDeleteModal.classList.remove("hidden");
+}
+
+function closeDeleteModal() {
+    deletingStudentId = null;
+    confirmDeleteModal.classList.add("hidden");
+    confirmDeleteModal.setAttribute("hidden", "");
 }
 
 form.addEventListener("submit", async (event) => {
@@ -153,11 +170,35 @@ table.addEventListener("click", async (event) => {
     }
 
     if (deleteId) {
-        await request(`/api/students/${deleteId}`, { method: "DELETE" });
-        resetForm();
-        await loadStudents();
+        openDeleteModal(deleteId);
     }
 });
 
+confirmDeleteButton.addEventListener("click", async () => {
+    if (!deletingStudentId) {
+        closeDeleteModal();
+        return;
+    }
+
+    try {
+        await request(`/api/students/${deletingStudentId}`, { method: "DELETE" });
+        closeDeleteModal();
+        resetForm();
+        await loadStudents();
+    } catch (error) {
+        closeDeleteModal();
+        formMessage.textContent = formatError(error);
+    }
+});
+
+cancelDeleteButton.addEventListener("click", closeDeleteModal);
+
+confirmDeleteModal.addEventListener("click", (event) => {
+    if (event.target === confirmDeleteModal) {
+        closeDeleteModal();
+    }
+});
+
+closeDeleteModal();
 checkHealth();
 loadStudents();
